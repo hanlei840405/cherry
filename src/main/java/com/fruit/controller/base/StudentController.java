@@ -46,7 +46,7 @@ public class StudentController {
         studentDto.setRealName("韩磊");
         studentDto.setSchool("济南三中");
         studentDto.setUsername("hanlei");
-        amqpTemplate.convertAndSend("edu.student.insert", studentDto);
+        amqpTemplate.convertAndSend("queue.student", studentDto);
         return "portal_student";
     }
 }
