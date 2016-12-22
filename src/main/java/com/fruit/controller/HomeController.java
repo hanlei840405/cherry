@@ -27,7 +27,11 @@ public class HomeController {
 
     @RequestMapping("/")
     public String index(Model model) {
-        List<CategoryDto> categoryDtoList = restTemplate.getForObject(Constant.REST_URL + Constant.SERVICE_ORANGE + "category/findRoot", ArrayList.class);
+        List<CategoryDto> categoryDtoList = restTemplate.getForObject(Constant.REST_URL + Constant.SERVICE_ORANGE + "category/categories/", ArrayList.class);
+        categoryDtoList.forEach(categoryDto -> {
+            List<CategoryDto> elements = restTemplate.getForObject(Constant.REST_URL + Constant.SERVICE_ORANGE + "category/categories/" + categoryDto.getCategoryCode(), ArrayList.class);
+            categoryDto.getElements().addAll(elements);
+        });
         model.addAttribute("categoryDtoList", categoryDtoList);
         return "index";
     }
