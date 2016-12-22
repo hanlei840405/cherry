@@ -27,9 +27,9 @@ public class HomeController {
 
     @RequestMapping("/")
     public String index(Model model) {
-        List<CategoryDto> categoryDtoList = restTemplate.getForObject(Constant.REST_URL + Constant.SERVICE_ORANGE + "category/categories/", ArrayList.class);
+        List<CategoryDto> categoryDtoList = restTemplate.getForEntity(Constant.REST_URL + Constant.SERVICE_ORANGE + "category/categories/", ArrayList.class).getBody();
         categoryDtoList.forEach(categoryDto -> {
-            List<CategoryDto> elements = restTemplate.getForObject(Constant.REST_URL + Constant.SERVICE_ORANGE + "category/categories/" + categoryDto.getCategoryCode(), ArrayList.class);
+            List<CategoryDto> elements = restTemplate.getForEntity(Constant.REST_URL + Constant.SERVICE_ORANGE + "category/categories/" + categoryDto.getCategoryCode(), ArrayList.class).getBody();
             categoryDto.getElements().addAll(elements);
         });
         model.addAttribute("categoryDtoList", categoryDtoList);
@@ -51,6 +51,6 @@ public class HomeController {
     @ResponseBody
     String print(@PathVariable("payload") String payload) {
         log.info("cherry, payload: {}", payload);
-        return restTemplate.getForEntity("http://litchi/orange/print?payload=" + payload, String.class).getBody();
+        return restTemplate.getForEntity("http://litchi/2000/api/print?payload=" + payload, String.class).getBody();
     }
 }
